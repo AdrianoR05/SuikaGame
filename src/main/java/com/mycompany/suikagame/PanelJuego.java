@@ -21,6 +21,7 @@ public class PanelJuego extends JPanel implements Runnable{
         this.setBackground(Color.blue);
         this.setLayout(null);
         
+        mj = new ManejadorJuego();
     }
     
     public void CorrerJuego() {

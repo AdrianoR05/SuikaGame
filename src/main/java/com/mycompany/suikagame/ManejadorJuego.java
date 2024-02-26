@@ -5,7 +5,9 @@ package com.mycompany.suikagame;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 
 public class ManejadorJuego {
     //Area de juego
@@ -15,6 +17,9 @@ public class ManejadorJuego {
     public static int rightX;
     public static int topY;
     public static int bottomY;
+    
+    //Puntuacion
+    int Puntuacion;
     
     public ManejadorJuego() {
         //Area de juego frame
@@ -33,6 +38,22 @@ public class ManejadorJuego {
         //Dibujando el frame del area de juego
         F2.setColor(Color.red);
         F2.setStroke(new BasicStroke(5F));
-        F2.drawRect(leftX-4, topY-4, ancho+8, largo+8);
+        F2.drawRect(leftX-350, topY-4, ancho+8, largo+8);
+        
+        //Dibujar frame ciclo de frutas
+        int x = rightX + 100;
+        int y = bottomY - 200;
+        F2.drawRect(x - 150, y, 450, 200);
+        F2.setFont(new Font ("Arial", Font.PLAIN, 30));
+        F2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        F2.drawString("CICLO DE FRUTAS", x - 45, y - 10);
+        
+        //Dibujar frame puntuacion
+        F2.drawRect(x - 50, topY + 45, 200, 100);
+        F2.drawString("PUNTUACIÓN", x - 50, y - 365);
+        
+        //Dibujar frame Siguiente fruta
+        F2.drawRect( x - 50, topY + 200, 200, 150);
+        F2.drawString("SIG. FRUTA", x - 40, y - 210);
     }
 }
