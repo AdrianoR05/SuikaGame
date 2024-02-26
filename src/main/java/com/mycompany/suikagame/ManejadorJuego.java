@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.Random;
 
 public class ManejadorJuego {
     //Area de juego
@@ -17,6 +18,7 @@ public class ManejadorJuego {
     public static int rightX;
     public static int topY;
     public static int bottomY;
+    private static Random rand = new Random();
     
     Fruta frutaActual;
     final int inicioFrutaX;
@@ -39,12 +41,29 @@ public class ManejadorJuego {
         inicioFrutaY = topY + Fruta.tamano;
         
         //Configurar fruta de inicio
-        frutaActual = new Datil("C:\\Users\\titor\\Images\\Datilcute.png");
+        frutaActual = escogerFruta();
         frutaActual.setXY(inicioFrutaX, inicioFrutaY);
         
     }
+    
+    private Fruta escogerFruta(){
+        //Elegir una frutica
+        Fruta fruta = null;
+        
+        int i = rand.nextInt(5);
+        
+        switch(i) {
+            case 0: fruta = new Datil("C:\\Users\\titor\\Documents\\Java\\SuikaGame\\src\\main\\java\\imagenes\\Datilcute.png"); break;
+            case 1: fruta = new Cotoperi("C:\\Users\\titor\\Documents\\Java\\SuikaGame\\src\\main\\java\\imagenes\\Cotoperi.png"); break;
+            case 2: fruta = new Mamey("C:\\Users\\titor\\Documents\\Java\\SuikaGame\\src\\main\\java\\imagenes\\Mamey.png"); break;
+            case 3: fruta = new Cereza("C:\\Users\\titor\\Documents\\Java\\SuikaGame\\src\\main\\java\\imagenes\\cerezita.png"); break;
+            case 4: fruta = new Pumalaca("C:\\Users\\titor\\Documents\\Java\\SuikaGame\\src\\main\\java\\imagenes\\Pumalaquita.png"); break;
+        }
+        return fruta;
+    }
     public void update(){
         frutaActual.update();
+        
     }
     
     

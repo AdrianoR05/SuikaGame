@@ -1,13 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.mycompany.suikagame;
 
-/**
- *
- * @author titor
- */
-public class Mamey {
-    
+
+public class Mamey extends Fruta {
+    public Mamey(String rutaImage){
+        super(rutaImage);
+        tamano *= 3.5;
+    }
 }

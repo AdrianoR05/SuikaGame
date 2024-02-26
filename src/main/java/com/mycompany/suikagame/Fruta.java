@@ -16,6 +16,7 @@ public class Fruta extends Rectangle{
     public static int tamano = 15;
     private BufferedImage imagen;
     int contadorCaida = 0;
+    boolean paredIzquierda, paredDerecha, piso;
     
     public Fruta(String rutaImagen){
         try{
@@ -35,21 +36,40 @@ public class Fruta extends Rectangle{
         this.x = x;
         this.y = y;
     }
+    
+    public void ColisionMov(){
+        paredIzquierda = false;
+        paredDerecha = false;
+        piso = false;
+        
+        //Colision de pared izquierda
+        if (x + 340 < ManejadorJuego.leftX){
+            paredIzquierda = true;
+        }
+        if (x + 390 > ManejadorJuego.rightX){
+            paredDerecha = true;
+        }
+        if (y + 700 > ManejadorJuego.bottomY){
+            piso = true;
+        }
+    }
+    
+    
 
     public void updateXY(int direccion){ }
     
     public void update(){ 
-        
+        ColisionMov();
         if (KeyHandler.izquierda){
-            
-            x -= Fruta.tamano;
-            
+            if(paredIzquierda == false){
+                x -= Fruta.tamano;
+            }
             KeyHandler.izquierda = false;
         }
         if (KeyHandler.derecha){
-            
-            x += Fruta.tamano;
-            
+            if(paredDerecha == false){
+                x += Fruta.tamano;
+            }
             KeyHandler.derecha = false;
         }
         
@@ -58,6 +78,7 @@ public class Fruta extends Rectangle{
             y += Fruta.tamano;
             contadorCaida = 0;
         }
+        
     }
     
     

@@ -1,13 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.mycompany.suikagame;
 
-/**
- *
- * @author titor
- */
-public class Parchita {
+
+public class Parchita extends Fruta {
+    
+    public Parchita(String rutaImagen) {
+        super(rutaImagen);
+        tamano *= 9.5;
+    }
     
 }

@@ -1,0 +1,439 @@
+INICIO
+
+CLASE NODO
+ALGORITMO Nodo
+    // Atributos de la clase Nodo
+    DECLARAR valor COMO Fruta;
+    DECLARAR siguiente COMO Nodo;
+
+    // Constructor
+    PROCEDIMIENTO Nodo(valor)
+        ESTABLECER valor = valor;
+        ESTABLECER siguiente = NULO;
+    FIN PROCEDIMIENTO
+
+    // Métodos de acceso para valor
+    FUNCION ObtenerValor()
+        RETORNAR valor;
+    FIN FUNCION
+
+    PROCEDIMIENTO EstablecerValor(nuevoValor)
+        ESTABLECER valor = nuevoValor;
+    FIN PROCEDIMIENTO
+
+    // Métodos de acceso para siguiente
+    FUNCION ObtenerSiguiente()
+        RETORNAR siguiente;
+    FIN FUNCION
+
+    PROCEDIMIENTO EstablecerSiguiente(nuevoSiguiente)
+        ESTABLECER siguiente = nuevoSiguiente;
+    FIN PROCEDIMIENTO
+FIN ALGORITMO
+
+CLASE LISTAFRUTAS
+ALGORITMO ListaFrutas
+    // Atributos de la clase ListaFrutas
+    DECLARAR cabeza COMO Nodo;
+    DECLARAR cantidad COMO Entero;
+
+    // Constructor
+    PROCEDIMIENTO ListaFrutas()
+        ESTABLECER cabeza = NULO;
+        ESTABLECER cantidad = 0;
+    FIN PROCEDIMIENTO
+
+    // Método para agregar frutas a la lista
+    PROCEDIMIENTO AgregarFrutas(valor)
+        DECLARAR nuevo COMO Nodo(valor);
+        SI cabeza == NULO ENTONCES
+            cabeza = nuevo;
+        SINO
+            DECLARAR temp COMO Nodo;
+            temp = cabeza;
+            MIENTRAS temp.getSiguiente() != NULO HACER
+                temp = temp.getSiguiente();
+            FIN MIENTRAS
+            temp.setSiguiente(nuevo);
+        FIN SI
+        cantidad++;
+    FIN PROCEDIMIENTO
+
+    // Método para eliminar una fruta de la lista
+    PROCEDIMIENTO EliminarFruta(valor)
+        SI estaVacia() ENTONCES
+            RETORNAR;
+        FIN SI
+        SI cabeza.getValor().equals(valor) ENTONCES
+            cabeza = cabeza.getSiguiente();
+            cantidad--;
+        FIN SI
+        DECLARAR actual COMO Nodo;
+        actual = cabeza;
+        MIENTRAS actual.getSiguiente().getValor().equals(valor) HACER
+            actual.setSiguiente(actual.getSiguiente().getSiguiente());
+            cantidad--;
+            RETORNAR;
+        FIN MIENTRAS
+        actual = actual.getSiguiente();
+    FIN PROCEDIMIENTO
+
+    // Método para verificar si la lista está vacía
+    FUNCION estaVacia()
+        RETORNAR cabeza == NULO;
+    FIN FUNCION
+
+    // Método para obtener la cabeza de la lista
+    FUNCION getCabeza()
+        RETORNAR cabeza;
+    FIN FUNCION;
+FIN ALGORITMO
+
+CLASE KEYHANDLER
+ALGORITMO KeyHandler
+    // Atributos de la clase KeyHandler
+    DECLARAR izquierda COMO Lógico;
+    DECLARAR derecha COMO Lógico;
+
+    // Método para manejar la tecla presionada
+    PROCEDIMIENTO keyPressed(e)
+        DECLARAR code COMO Entero;
+        code = e.getKeyCode();
+        SI code == KeyEvent.VK_A ENTONCES
+            izquierda = VERDADERO;
+        FIN SI
+        SI code == KeyEvent.VK_D ENTONCES
+            derecha = VERDADERO;
+        FIN SI
+    FIN PROCEDIMIENTO
+
+    // Método para manejar la tecla liberada
+    PROCEDIMIENTO keyReleased(e)
+        LANZAR UnsupportedOperationException("No soportado aún.");
+    FIN PROCEDIMIENTO
+FIN ALGORITMO
+
+CLASE FRUTA
+ALGORITMO Fruta
+    // Atributos de la clase Fruta
+    DECLARAR x COMO Entero;
+    DECLARAR y COMO Entero;
+    DECLARAR tamano COMO Entero;
+    DECLARAR imagen COMO BufferedImage;
+    DECLARAR contadorCaida COMO Entero;
+    DECLARAR paredIzquierda COMO Lógico;
+    DECLARAR paredDerecha COMO Lógico;
+    DECLARAR piso COMO Lógico;
+
+    // Constructor
+    PROCEDIMIENTO Fruta(rutaImagen)
+        INTENTAR
+            imagen = leerImagenDesdeArchivo(rutaImagen);
+        ATRAPAR IOException
+            imprimirError("Error al cargar la imagen");
+        FIN INTENTAR
+    FIN PROCEDIMIENTO
+
+    // Método para dibujar la fruta
+    PROCEDIMIENTO draw(F2)
+        DECLARAR imagenEsc COMO Imagen;
+        imagenEsc = escalarImagen(imagen, tamano, tamano);
+        F2.dibujarImagen(imagenEsc, x, y, NULO);
+    FIN PROCEDIMIENTO
+
+    // Método para establecer las coordenadas (x, y) de la fruta
+    PROCEDIMIENTO setXY(nuevaX, nuevaY)
+        x = nuevaX;
+        y = nuevaY;
+    FIN PROCEDIMIENTO
+
+    // Método para detectar colisiones con los límites del juego
+    PROCEDIMIENTO ColisionMov()
+        paredIzquierda = FALSO;
+        paredDerecha = FALSO;
+        piso = FALSO;
+
+        SI x + 340 < ManejadorJuego.leftX ENTONCES
+            paredIzquierda = VERDADERO;
+        FIN SI
+        SI x + 390 > ManejadorJuego.rightX ENTONCES
+            paredDerecha = VERDADERO;
+        FIN SI
+        SI y + 700 > ManejadorJuego.bottomY ENTONCES
+            piso = VERDADERO;
+        FIN SI
+    FIN PROCEDIMIENTO
+
+    // Método para actualizar las coordenadas de la fruta
+    PROCEDIMIENTO update()
+        ColisionMov();
+        SI KeyHandler.izquierda ENTONCES
+            SI paredIzquierda == FALSO ENTONCES
+                x -= tamano;
+            FIN SI
+            KeyHandler.izquierda = FALSO;
+        FIN SI
+        SI KeyHandler.derecha ENTONCES
+            SI paredDerecha == FALSO ENTONCES
+                x += tamano;
+            FIN SI
+            KeyHandler.derecha = FALSO
+        FIN SI
+
+        contadorCaida++;
+        SI contadorCaida == ManejadorJuego.dropInterval ENTONCES
+            y += tamano;
+            contadorCaida = 0;
+        FIN SI
+    FIN PROCEDIMIENTO
+FIN ALGORITMO
+
+CLASE DATIL
+ALGORITMO Datil HEREDA Fruta
+    // Constructor
+    PROCEDIMIENTO Datil(rutaImagen)
+        super(rutaImagen);
+    FIN PROCEDIMIENTO
+FIN ALGORITMO
+
+CLASE COTOPERI
+ALGORITMO Cotoperi HEREDA Fruta
+    // Constructor
+    PROCEDIMIENTO Cotoperi(rutaImagen)
+        super(rutaImagen);
+	tamano *= 2;
+    FIN PROCEDIMIENTO
+FIN ALGORITMO
+
+CLASE MAMEY
+ALGORITMO Mamey HEREDA Fruta
+    // Constructor
+    PROCEDIMIENTO Mamey(rutaImagen)
+        super(rutaImagen);
+	tamano *= 3.5;
+    FIN PROCEDIMIENTO
+FIN ALGORITMO
+
+ALGORITMO Cereza HEREDA Fruta
+    // Constructor
+    PROCEDIMIENTO Cereza(rutaImagen)
+        super(rutaImagen);
+	tamano *= 5;
+    FIN PROCEDIMIENTO
+FIN ALGORITMO
+
+CLASE PUMALACA
+ALGORITMO Pumalaca HEREDA Fruta
+    // Constructor
+    PROCEDIMIENTO Pumalaca(rutaImagen)
+        super(rutaImagen);
+	tamano *= 6.5;
+    FIN PROCEDIMIENTO
+FIN ALGORITMO
+
+CLASE KIWI
+ALGORITMO Kiwi HEREDA Fruta
+    // Constructor
+    PROCEDIMIENTO Kiwi(rutaImagen)
+        super(rutaImagen);
+	tamano *= 8;
+    FIN PROCEDIMIENTO
+FIN ALGORITMO
+
+CLASE PARCHITA
+ALGORITMO Parchita HEREDA Fruta
+    // Constructor
+    PROCEDIMIENTO Pumalaca(rutaImagen)
+        super(rutaImagen);
+	tamano *= 9.5;
+    FIN PROCEDIMIENTO
+FIN ALGORITMO
+
+CLASE MANGO
+ALGORITMO Mango HEREDA Fruta
+    // Constructor
+    PROCEDIMIENTO Mango(rutaImagen)
+        super(rutaImagen);
+	tamano *= 11;
+    FIN PROCEDIMIENTO
+FIN ALGORITMO
+
+CLASE COCO
+ALGORITMO Coco HEREDA Fruta
+    // Constructor
+    PROCEDIMIENTO Coco(rutaImagen)
+        super(rutaImagen);
+	tamano *= 12.5;
+    FIN PROCEDIMIENTO
+FIN ALGORITMO
+
+CLASE PATILLA
+ALGORITMO Patilla HEREDA Fruta
+    // Constructor
+    PROCEDIMIENTO Patilla(rutaImagen)
+        super(rutaImagen);
+	tamano *= 14;
+    FIN PROCEDIMIENTO
+FIN ALGORITMO
+
+CLASE MANEJADORJUEGO
+ALGORITMO ManejadorJuego
+    // Atributos del ManejadorJuego
+    CONSTANTE ancho = 360;
+    CONSTANTE largo = 600;
+    DECLARAR leftX COMO Entero;
+    DECLARAR rightX COMO Entero;
+    DECLARAR topY COMO Entero;
+    DECLARAR bottomY COMO Entero;
+    DECLARAR rand COMO Random;
+    DECLARAR frutaActual COMO Fruta;
+    CONSTANTE inicioFrutaX = leftX - 165 - Fruta.tamano;
+    CONSTANTE inicioFrutaY = topY + Fruta.tamano;
+    CONSTANTE dropInterval = 60;
+    ENTERO Puntuacion;
+    ENTERO contadorCaida;
+
+    // Constructor
+    PROCEDIMIENTO ManejadorJuego()
+        leftX = (PanelJuego.ancho / 2) - (ancho / 2);
+        rightX = leftX + ancho;
+        topY = 50;
+        bottomY = topY + largo;
+        frutaActual = escogerFruta();
+        frutaActual.setXY(inicioFrutaX, inicioFrutaY);
+    FIN PROCEDIMIENTO
+
+    // Método para escoger una fruta aleatoria
+    FUNCION escogerFruta()
+        DECLARAR fruta COMO Fruta;
+        DECLARAR i COMO Entero;
+        i = rand.nextInt(5);
+        SEGUN i HACER
+            CASO 0: fruta = new Datil("rutaImagenDatil"); ROMPER;
+            CASO 1: fruta = new Cotoperi("rutaImagenCotoperi"); ROMPER;
+            CASO 2: fruta = new Mamey("rutaImagenMamey"); ROMPER;
+            CASO 3: fruta = new Cereza("rutaImagenCereza"); ROMPER;
+            CASO 4: fruta = new Pumalaca("rutaImagenPumalaca"); ROMPER;
+        FIN SEGUN
+        RETORNAR fruta;
+    FIN FUNCION
+
+    FUNCION update
+      frutaActual.update();
+    FIN FUNCION
+
+   FUNCION draw
+    // Dibujando el frame del área de juego
+    F2.setColor(Color.red);
+    F2.setStroke(new BasicStroke(5F));
+    F2.drawRect(leftX - 350, topY - 4, ancho + 8, largo + 8);
+
+    // Dibujar frame ciclo de frutas
+    DECLARAR x COMO Entero;
+    DECLARAR y COMO Entero;
+    x = rightX + 100;
+    y = bottomY - 200;
+    F2.drawRect(x - 150, y, 450, 200);
+    F2.setFont(new Font("Arial", Font.PLAIN, 30));
+    F2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+    F2.drawString("CICLO DE FRUTAS", x - 45, y - 10);
+
+    // Dibujar frame puntuación
+    F2.drawRect(x - 50, topY + 45, 200, 100);
+    F2.drawString("PUNTUACIÓN", x - 50, y - 365);
+
+    // Dibujar frame Siguiente fruta
+    F2.drawRect(x - 50, topY + 200, 200, 150);
+    F2.drawString("SIG. FRUTA", x - 40, y - 210);
+
+    // Dibujar Fruta Actual
+    SI frutaActual != NULO ENTONCES
+        frutaActual.draw(F2);
+    FIN SI
+   FIN FUNCION
+FIN ALGORITMO
+
+CLASE PANELJUEGO
+ALGORITMO PanelJuego HEREDA JPanel IMPLEMENTA Runnable
+    // Atributos de la clase PanelJuego
+    CONSTANTE ancho = 1280;
+    CONSTANTE largo = 720;
+    CONSTANTE fps = 60;
+    DECLARAR EjecutarThread COMO Hilo;
+    DECLARAR mj COMO ManejadorJuego;
+    DECLARAR fondo COMO Imagen;
+
+    // Constructor
+    PROCEDIMIENTO PanelJuego()
+        // Ajustes
+        ESTABLECER tamaño preferido a nueva Dimensión(ancho, largo);
+        ESTABLECER fondo a NULO;
+        ESTABLECER color de fondo a Color negro;
+        ESTABLECER diseño a nulo;
+        // Implementando las teclas
+        AGREGAR escuchador de teclas (nuevo KeyHandler());
+        ESTABLECER enfoque a VERDADERO;
+        mj = nuevo ManejadorJuego();
+    FIN PROCEDIMIENTO
+
+    // Método para correr el juego
+    PROCEDIMIENTO CorrerJuego()
+        EjecutarThread = nuevo Hilo(this);
+        EjecutarThread.iniciar();
+    FIN PROCEDIMIENTO
+
+    // Método para ejecutar el bucle del juego
+    PROCEDIMIENTO run()
+        CONSTANTE Intervalo = 1000000000 / fps;
+        DECLARAR Delta COMO Decimal;
+        DECLARAR TiempoAnterior COMO Entero;
+        DECLARAR TiempoActual COMO Entero;
+        MIENTRAS EjecutarThread != NULO HACER
+            TiempoActual = obtener tiempo actual en nanosegundos;
+            Delta += (TiempoActual - TiempoAnterior) / Intervalo;
+            TiempoAnterior = TiempoActual;
+            SI Delta >= 1 ENTONCES
+                actualizar();
+                repintar();
+                Delta--;
+            FIN SI
+        FIN MIENTRAS
+    FIN PROCEDIMIENTO
+
+    // Método para actualizar el juego
+    PROCEDIMIENTO actualizar()
+        mj.actualizar();
+    FIN PROCEDIMIENTO
+
+    // Método para dibujar el componente
+    PROCEDIMIENTO paintComponent(F)
+        super.paintComponent(F);
+        DECLARAR F2 COMO Graphics2D;
+        F2 = convertir a Graphics2D(F);
+        mj.dibujar(F2);
+    FIN PROCEDIMIENTO
+FIN ALGORITMO
+
+CLASE MAIN SUIKAGAME
+ALGORITMO SuikaGame
+    // Método principal (main)
+    PROCEDIMIENTO principal(args)
+        DECLARAR Ventana COMO JFrame;
+        Ventana = nuevo JFrame("Suika Game"); // Se crea una ventana
+        Ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Hace que se pueda cerrar la ventana
+        Ventana.setResizable(FALSO); // Hace que no se pueda cambiar de tamaño la ventana
+
+        // Añadir panel de juego a la ventana
+        DECLARAR paneljuego COMO PanelJuego;
+        paneljuego = nuevo PanelJuego();
+        Ventana.agregar(paneljuego);
+        Ventana.empaquetar();
+
+        Ventana.setLocationRelativeTo(NULO); // Hace que esté centrada la ventana
+        Ventana.setVisible(VERDADERO); // Hace que se vea la ventana
+
+        paneljuego.CorrerJuego();
+    FIN PROCEDIMIENTO
+FIN ALGORITMO
+
+FIN.

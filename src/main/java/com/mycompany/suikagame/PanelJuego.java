@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.KeyListener;
 import javax.swing.JPanel;
 
@@ -14,19 +15,21 @@ public class PanelJuego extends JPanel implements Runnable{
     final int fps = 60;
     Thread EjecutarThread;
     ManejadorJuego mj;
-    
+    Image fondo = null;
     
     
     public PanelJuego(){
         //Ajustes
         this.setPreferredSize(new Dimension(ancho, largo));
-        this.setBackground(Color.blue);
+        this.setBackground(Color.black);
         this.setLayout(null);
         //Implementando las teclas
         this.addKeyListener((KeyListener) new KeyHandler());
         this.setFocusable(true);
         
         mj = new ManejadorJuego();
+        
+
     }
     
     public void CorrerJuego() {

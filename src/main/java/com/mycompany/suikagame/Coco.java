@@ -1,13 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.mycompany.suikagame;
 
-/**
- *
- * @author titor
- */
-public class Coco {
+
+public class Coco extends Fruta {
+    
+    public Coco(String rutaImagen) {
+        super(rutaImagen);
+        tamano *= 12.5;
+    }
     
 }
