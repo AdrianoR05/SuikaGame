@@ -17,6 +17,8 @@ public class SuikaGame {
         
         Ventana.setLocationRelativeTo(null); //Hace que este centrada la ventana
         Ventana.setVisible(true); //Hace que se vea la ventana
+        
+        paneljuego.CorrerJuego();
     }
 }
 

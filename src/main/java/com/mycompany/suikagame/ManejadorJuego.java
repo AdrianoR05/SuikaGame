@@ -18,21 +18,35 @@ public class ManejadorJuego {
     public static int topY;
     public static int bottomY;
     
+    Fruta frutaActual;
+    final int inicioFrutaX;
+    final int inicioFrutaY;
+    
+    public static int dropInterval = 60; //FPS
+
     //Puntuacion
     int Puntuacion;
-    
+    int contadorCaida = 0;
+   
     public ManejadorJuego() {
         //Area de juego frame
         leftX = (PanelJuego.ancho/2) - (ancho/2);
         rightX = leftX + ancho;
         topY= 50;
         bottomY = topY + largo;
+        //Generar frutas mitad del contenedor y arriba
+        inicioFrutaX = leftX - 165 - Fruta.tamano;
+        inicioFrutaY = topY + Fruta.tamano;
         
+        //Configurar fruta de inicio
+        frutaActual = new Datil("C:\\Users\\titor\\Images\\Datilcute.png");
+        frutaActual.setXY(inicioFrutaX, inicioFrutaY);
+        
+    }
+    public void update(){
+        frutaActual.update();
     }
     
-    public void update() {
-        
-    }
     
     public void draw(Graphics2D F2){
         //Dibujando el frame del area de juego
@@ -55,5 +69,10 @@ public class ManejadorJuego {
         //Dibujar frame Siguiente fruta
         F2.drawRect( x - 50, topY + 200, 200, 150);
         F2.drawString("SIG. FRUTA", x - 40, y - 210);
+        
+        //Dibujar Fruta Actual
+        if(frutaActual != null){
+            frutaActual.draw(F2);
+        }
     }
 }
